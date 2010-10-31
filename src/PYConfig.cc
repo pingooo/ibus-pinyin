@@ -47,6 +47,7 @@ const gchar * const CONFIG_SELECT_KEYS               = "SelectKeys";
 const gchar * const CONFIG_GUIDE_KEY                 = "GuideKey";
 const gchar * const CONFIG_AUXILIARY_SELECT_KEY_F    = "AuxiliarySelectKey_F";
 const gchar * const CONFIG_AUXILIARY_SELECT_KEY_KP   = "AuxiliarySelectKey_KP";
+const gchar * const CONFIG_ENTER_KEY                 = "EnterKey";
 
 std::unique_ptr<PinyinConfig> PinyinConfig::m_instance;
 std::unique_ptr<BopomofoConfig> BopomofoConfig::m_instance;
@@ -454,9 +455,10 @@ BopomofoConfig::readDefaultValues (void)
 
     m_select_keys = read (CONFIG_SELECT_KEYS, 0);
     if (m_select_keys >= 9) m_select_keys = 0;
-    m_guide_key = read (CONFIG_GUIDE_KEY, true);
+    m_guide_key = read (CONFIG_GUIDE_KEY, false);
     m_auxiliary_select_key_f = read (CONFIG_AUXILIARY_SELECT_KEY_F, true);
     m_auxiliary_select_key_kp = read (CONFIG_AUXILIARY_SELECT_KEY_KP, true);
+    m_enter_key = read (CONFIG_ENTER_KEY, true);
 }
 
 gboolean
@@ -493,6 +495,8 @@ BopomofoConfig::valueChanged (const std::string &section,
         m_auxiliary_select_key_f = normalizeGValue (value, true);
     else if (CONFIG_AUXILIARY_SELECT_KEY_KP == name)
         m_auxiliary_select_key_kp = normalizeGValue (value, true);
+    else if (CONFIG_ENTER_KEY == name)
+        m_enter_key = normalizeGValue (value, true);
     else
         return FALSE;
     return TRUE;
